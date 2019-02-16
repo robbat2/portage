@@ -19,10 +19,19 @@ install:
 
 script:
     - printf "[build_ext]\nportage-ext-modules=true" >> setup.cfg
-    - ./setup.py test
-    - ./setup.py install --root=/tmp/install-root
-    - if [[ ${TRAVIS_PYTHON_VERSION} == ?.? ]]; then
+    - |
+      echo -en "travis_fold:start:setup.py_test\r"
+      ./setup.py test
+      echo -en "travis_fold:end:setup.py_test"
+    - |
+      echo -en "travis_fold:start:setup.py_install\r"
+      ./setup.py install --root=/tmp/install-root
+      echo -en "travis_fold:end:setup.py_install\r"
+    - |
+      echo -en "travis_fold:start:tox\r"
+      if [[ ${TRAVIS_PYTHON_VERSION} == ?.? ]]; then
         tox -e py${TRAVIS_PYTHON_VERSION/./};
       else
         tox -e ${TRAVIS_PYTHON_VERSION};
       fi
+      echo -en "travis_fold:end:tox\r"
