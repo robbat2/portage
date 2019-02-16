@@ -1,20 +1,31 @@
 language: python
 
+stages:
+  - test
+
 matrix:
   include:
-    - python: 2.7
-    - python: 3.4
-    - python: 3.5
-    - python: 3.6
-    - python: pypy
+    - stage: test
+      python: 2.7
+    - stage: test
+      python: 3.4
+    - stage: test
+      python: 3.5
+    - stage: test
+      python: 3.6
+    - stage: test
+      python: pypy
     # See https://github.com/travis-ci/travis-ci/issues/9815
-    - python: 3.7
+    - stage: test
+      python: 3.7
       dist: xenial
       sudo: required
-    - python: pypy3.5
+    - stage: test
+      python: pypy3.5
       dist: xenial
       sudo: required
 
+# The following ends up being common for all jobs above.
 # command to install dependencies
 install:
     - pip install tox
