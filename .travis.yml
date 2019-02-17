@@ -1,10 +1,20 @@
 language: python
 
 stages:
+  - verify
   - test
 
 matrix:
   include:
+    # This step comes first, as a fast validation that the code compiles
+    - stage: verify
+      python: 3.4
+      script: python3 -m compileall -q .
+      cache: false
+      install: false
+      dist: xenial
+      sudo: required
+    # Now all remaining steps
     - stage: test
       python: 2.7
     - stage: test
